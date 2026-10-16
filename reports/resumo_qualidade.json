@@ -1,0 +1,18 @@
+{
+  "competencia": "202609",
+  "fonte": "DATASUS CNES",
+  "escopo": "SP por prefixo de 6 dígitos de CO_UNIDADE validado contra tbMunicipio",
+  "metricas": {
+    "registros_brasil": 640122,
+    "registros_sp": 154516,
+    "coordenadas_ausentes_ou_incompletas": 18444,
+    "nome_fantasia_ausente": 2,
+    "cnes_distintos_nao_vazios": 154516,
+    "cnes_repetidos_identificadores": 0,
+    "cnes_repetidos_registros_excedentes": 0,
+    "co_unidade_repetidas_identificadores": 0,
+    "co_unidade_repetidas_registros_excedentes": 0,
+    "municipios_sp_na_referencia": 645,
+    "municipios_sp_com_registros": 645
+  }
+}

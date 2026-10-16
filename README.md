@@ -1,56 +1,31 @@
-# SUS Data Quality Observatory — São Paulo 🇧🇷
+# SUS Data Quality Observatory — São Paulo (V2)
 
-**How Reliable Is Public Healthcare Facility Data in São Paulo, Brazil?**
+Auditoria reprodutível de qualidade cadastral dos estabelecimentos registrados no **CNES/DATASUS, competência 202609**. O CNES inclui estabelecimentos públicos e privados; este estudo **não mede a qualidade da assistência médica**.
 
-A reproducible Data Quality Engineering project using **Python, SQL, DuckDB, pytest and GitHub Actions** to investigate the reliability of CNES healthcare-establishment records in São Paulo state.
+## Resultados
 
-## Scope and caveats
+- `reports/resumo_qualidade.json`: indicadores estaduais
+- `reports/indicadores_municipios.csv`: indicadores por município
+- `reports/cnes_repetidos.csv`: possíveis duplicidades de CO_CNES
+- `reports/unidades_repetidas.csv`: possíveis duplicidades de CO_UNIDADE
 
-- The V1 pipeline accepts a CNES CSV containing the columns `cnes`, `codigo_ibge`, `uf`, `municipio` and filters **UF = SP** before calculating metrics.
-- The national CNES contains public and private establishments, not only SUS providers. This project does not label all CNES entries as SUS facilities.
-- Input columns vary across CNES exports. Adapt field names using the official data dictionary if necessary; do not silently substitute columns.
-- Missing or unassignable UF records cannot be included in an SP-only analysis and are excluded; `source_rows` and `record_count` are recorded to make the scope explicit.
-- Data-quality issues do **not** establish lack of healthcare access or clinical quality.
+## Método
 
-## Official source
+A seleção de SP usa os seis primeiros dígitos de `CO_UNIDADE`, que correspondem ao código municipal IBGE/CNES, confirmados pela tabela oficial `tbMunicipio202609.csv` (`CO_SIGLA_ESTADO = SP`). `CO_MUNICIPIO_GESTOR` é analisado separadamente, pois o município gestor pode diferir do município da unidade. O processamento utiliza leitura em streaming com a biblioteca padrão do Python, sem Pandas ou Colab.
 
-National CNES open-data catalog: https://dadosabertos.saude.gov.br/dataset/cnes-cadastro-nacional-de-estabelecimentos-de-saude
+Indicadores de completude e formato são **sinais de qualidade cadastral**, não evidências de fraude ou de mau atendimento. Repetições são alertas para investigação, não erros confirmados. Coordenadas inválidas verificam limites globais, não a posição exata dentro do estado. Dados de contato pessoal e identificação sensível não são exportados.
 
-Download a relevant **national or São Paulo CSV** from the official source, inspect its dictionary, and confirm its column names. No live CNES dataset is bundled in this repository. The sample is synthetic.
+## Reprodução
 
-## Quickstart
-
-```bash
-pip install -r requirements.txt
-python -m pytest -q
-python -m src.pipeline --input data/sample/cnes_synthetic.csv --output outputs
-```
-
-## Real data
-
-1. Download an official CNES CSV containing São Paulo records.
-2. Place it at `data/raw/cnes.csv` (ignored by Git).
-3. Ensure the required field names match the input schema above.
-4. Execute:
+Coloque os arquivos oficiais `tbEstabelecimento202609.csv` e `tbMunicipio202609.csv` em uma pasta local e execute na raiz do projeto:
 
 ```bash
-python -m src.pipeline --input data/raw/cnes.csv --output outputs
+python -m src.analyze_cnes --estabelecimentos /caminho/tbEstabelecimento202609.csv --municipios /caminho/tbMunicipio202609.csv --saida reports
+python -m unittest discover -s tests -v
 ```
 
-Outputs: `quality.duckdb`, `record_checks.csv`, `quality_report.json`, `quality_summary.md`. The JSON includes the state filter and both source and SP row counts.
+Os CSVs brutos oficiais não estão incluídos no ZIP, pois são grandes. Os relatórios gerados a partir deles estão incluídos.
 
-## Checks
+## Fonte
 
-- Completeness: CNES, municipality code, UF, municipality name
-- Format: CNES, IBGE code, UF, CEP
-- Broad Brazilian geographic plausibility: latitude and longitude (not precise SP boundaries)
-- Repeated CNES identifier **within the SP snapshot**
-
-Failures can overlap. Optional blanks are not automatically considered invalid. The pipeline flags records but does not silently discard SP records.
-
-## Roadmap
-
-- **V2:** authoritative IBGE municipality cross-checks, SP-specific geospatial boundaries, dbt models and tests, dashboards by municipality and health region.
-- **V3:** temporal snapshots, drift/freshness monitoring, scheduled alerts.
-
-**Publication policy:** do not publish empirical failure rates until the pipeline has been run against a documented official CNES export.
+Ministério da Saúde / DATASUS — Cadastro Nacional de Estabelecimentos de Saúde (CNES), competência setembro de 2026. Dados consultados a partir dos arquivos fornecidos para o projeto.
