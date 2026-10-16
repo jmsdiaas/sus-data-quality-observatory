@@ -1,0 +1,5 @@
+cnes,codigo_ibge,uf,municipio,cep,latitude,longitude,nome_fantasia
+1234567,3550308,SP,São Paulo,01001000,-23.55,-46.63,Unidade Exemplo A
+1234567,3550308,SP,São Paulo,inválido,999,-46.63,Unidade Exemplo B
+,3509502,SP,Campinas,,,,Unidade Exemplo C
+7654321,5208707,GO,Goiânia,74000000,-16.68,-49.25,Registro Fora de SP
