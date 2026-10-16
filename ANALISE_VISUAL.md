@@ -7,11 +7,11 @@ Recorte geográfico: prefixo municipal de `CO_UNIDADE` validado em `tbMunicipio`
 - Coordenadas ausentes ou incompletas: **18,444 (11.94%)**.
 - CNES repetidos: **0**.
 
-![Top 10 municípios](../figures/01_top10_registros.png)
+![Top 10 municípios](./01_top10_registros.png)
 
-![Taxa de coordenadas incompletas](../figures/02_taxa_coordenadas_top10.png)
+![Taxas de coordenadas incompletas](./02_taxa_coordenadas_top10.png)
 
-![Visão geral de coordenadas](../figures/03_visao_geral_coordenadas.png)
+![Visão geral de coordenadas](./03_visao_geral_coordenadas.png)
 
 ## Interpretação
 
