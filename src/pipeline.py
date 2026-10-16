@@ -70,7 +70,8 @@ def run(input_path: str, output_dir: str = 'outputs') -> dict:
         for name in rule_names:
             failures = con.execute(f'SELECT count(*) FROM checks WHERE {name}').fetchone()[0]
             results.append({'rule': name, 'failures': failures, 'failure_rate': round(failures / total, 6) if total else None})
-        con.execute('COPY checks TO ? (FORMAT CSV, HEADER TRUE)', [str((out / 'record_checks.csv').resolve())])
+        export_path = str((out / 'record_checks.csv').resolve()).replace("'", "''")
+        con.execute(f"COPY checks TO '{export_path}' (FORMAT CSV, HEADER TRUE)")
         report = {'source_file': source.name, 'source_reference': SOURCE_URL, 'state_filter': 'SP', 'source_rows': source_count, 'record_count': total,
                   'note': 'Counts are per-rule and may overlap. No record is automatically excluded.', 'rules': results}
         (out / 'quality_report.json').write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding='utf-8')
