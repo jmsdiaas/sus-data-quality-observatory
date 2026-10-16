@@ -33,4 +33,4 @@ Ministério da Saúde / DATASUS — Cadastro Nacional de Estabelecimentos de Sa�
 
 ## Análise visual (V3)
 
-Veja [os gráficos e sua interpretação](reports/ANALISE_VISUAL.md).
+[Veja os gráficos e sua interpretação.](./ANALISAR_VISUAL.md).
