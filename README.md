@@ -29,3 +29,8 @@ Os CSVs brutos oficiais não estão incluídos no ZIP, pois são grandes. Os rel
 ## Fonte
 
 Ministério da Saúde / DATASUS — Cadastro Nacional de Estabelecimentos de Saúde (CNES), competência setembro de 2026. Dados consultados a partir dos arquivos fornecidos para o projeto.
+
+
+## Análise visual (V3)
+
+Veja [os gráficos e sua interpretação](reports/ANALISE_VISUAL.md).
